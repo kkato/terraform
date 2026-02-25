@@ -1,0 +1,30 @@
+---
+name: Scaffold a working directory
+run-name: Scaffold a working directory (${{ inputs.working_dir }})
+on:
+  workflow_dispatch:
+    inputs:
+      working_dir:
+        description: working directory
+        required: true
+permissions: {}
+env:
+  TFACTION_WORKING_DIR: ${{ github.event.inputs.working_dir }}
+jobs:
+  scaffold:
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: aquaproj/aqua-installer@e2d0136abcf70b7a2f93480c8c7bfed50a348d5c # v4.0.0
+        with:
+          aqua_version: v2.46.0
+      - uses: suzuki-shunsuke/tfaction/scaffold-working-dir@4562d910bbacecf384c8aeda25332284fcf05f38 # v1.20.1
+      - uses: suzuki-shunsuke/tfaction/create-scaffold-pr@4562d910bbacecf384c8aeda25332284fcf05f38 # v1.20.1
+        with:
+          github_token: ${{ github.token }}

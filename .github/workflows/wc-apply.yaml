@@ -1,0 +1,45 @@
+---
+name: apply
+on:
+  workflow_call:
+    inputs:
+      targets:
+        required: true
+        type: string
+permissions: {}
+env:
+  TFACTION_IS_APPLY: "true"
+jobs:
+  apply:
+    timeout-minutes: 30
+    name: "apply (${{ matrix.target.target }})"
+    runs-on: ${{ matrix.target.runs_on }}
+    permissions:
+      id-token: write
+      contents: read
+      pull-requests: write
+    env:
+      TFACTION_TARGET: ${{ matrix.target.target }}
+      TFACTION_WORKING_DIR: ${{ matrix.target.working_directory }}
+      TFACTION_JOB_TYPE: ${{ matrix.target.job_type }}
+    strategy:
+      fail-fast: false
+      matrix:
+        target: ${{ fromJSON(inputs.targets) }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          persist-credentials: false
+      - uses: aquaproj/aqua-installer@e2d0136abcf70b7a2f93480c8c7bfed50a348d5c # v4.0.0
+        with:
+          aqua_version: v2.46.0
+      - uses: suzuki-shunsuke/tfaction/setup@4562d910bbacecf384c8aeda25332284fcf05f38 # v1.20.1
+        with:
+          github_token: ${{ github.token }}
+      - uses: suzuki-shunsuke/tfaction/apply@4562d910bbacecf384c8aeda25332284fcf05f38 # v1.20.1
+        with:
+          github_token: ${{ github.token }}
+      - uses: suzuki-shunsuke/tfaction/create-follow-up-pr@4562d910bbacecf384c8aeda25332284fcf05f38 # v1.20.1
+        if: failure()
+        with:
+          github_token: ${{ github.token }}

@@ -1,0 +1,11 @@
+---
+registries:
+  - type: standard
+    ref: v4.311.0 # renovate: depName=aquaproj/aqua-registry
+packages:
+  - name: hashicorp/terraform@v1.11.4
+  - name: terraform-linters/tflint@v0.55.1
+  - name: suzuki-shunsuke/tfcmt@v4.14.0
+  - name: suzuki-shunsuke/github-comment@v6.3.2
+imports:
+  - imports/tfaction.yaml
