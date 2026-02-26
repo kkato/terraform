@@ -1,8 +1,8 @@
 ---
 plan_workflow_name: test
 target_groups:
-  - working_directory: k8s/
-    target: k8s/
+  - working_directory: k8s
+    target: k8s
     template_dir: templates/default
 tflint:
   enabled: true
