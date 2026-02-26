@@ -33,5 +33,5 @@ jobs:
       ref: ${{ github.event.pull_request.head.sha }}
     permissions:
       id-token: write
-      contents: read
+      contents: write
       pull-requests: write
