@@ -17,7 +17,7 @@ jobs:
     runs-on: ${{ matrix.target.runs_on }}
     permissions:
       id-token: write
-      contents: read
+      contents: write
       pull-requests: write
     env:
       TFACTION_TARGET: ${{ matrix.target.target }}
